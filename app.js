@@ -2,10 +2,17 @@ const mysql = require('mysql');
 const faker = require('faker');
 const dotenv = require('dotenv');
 dotenv.config();
-
-const connection = mysql.createConnection({
+const con = mysql.createConnection({
 	host: process.env.HOST,
-	user: process.env.USER,
+	user: process.env.USERNAME,
 	password: process.env.PASSWORD,
-	database: 'joinus'
+	database: 'join_us'
 });
+
+const q = 'SELECT * FROM users';
+con.query(q, (error, results, fields) => {
+	if (error) throw error;
+	console.log(results);
+});
+
+con.end();
