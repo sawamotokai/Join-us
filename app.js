@@ -9,8 +9,18 @@ const con = mysql.createConnection({
 	database: 'join_us'
 });
 
-const q = 'SELECT * FROM users';
-con.query(q, (error, results, fields) => {
+// const q = 'SELECT * FROM users';
+// con.query(q, (error, results, fields) => {
+// 	if (error) throw error;
+// 	console.log(results);
+// });
+var q = `INSERT INTO users SET ?`;
+
+const person = {
+	email: faker.internet.email(),
+	created_at: faker.date.past()
+};
+con.query(q, person, (error, results) => {
 	if (error) throw error;
 	console.log(results);
 });
