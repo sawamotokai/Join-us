@@ -33,7 +33,7 @@ app.post('/register', (req, res) => {
 		if (err) throw err;
 		console.log(results);
 	});
-	res.send('THANK YOU');
+	res.redirect('/');
 });
 
 app.listen((PORT = process.env.PORT), () => {
