@@ -1,12 +1,31 @@
 const mysql = require('mysql');
 const faker = require('faker');
 const dotenv = require('dotenv');
+const express = require('express');
+const app = express();
+
+app.set('view engine', 'ejs');
 dotenv.config();
+
 const con = mysql.createConnection({
 	host: process.env.HOST,
 	user: process.env.USERNAME,
 	password: process.env.PASSWORD,
 	database: 'join_us'
+});
+
+app.get('/', (req, res) => {
+	const q = 'SELECT COUNT(*) AS userNum FROM users';
+	con.query(q, (err, results) => {
+		if (err) throw err;
+		console.log(results);
+		// res.send(`We have ${results[0].userNum} users!`);
+		res.render('home', { userNum: results[0].userNum });
+	});
+});
+
+app.listen((PORT = process.env.PORT), () => {
+	console.log(`Server running on ${process.env.PORT}`);
 });
 
 // const q = 'SELECT * FROM users';
@@ -26,11 +45,11 @@ const con = mysql.createConnection({
 // });
 
 // inserting bulky data
-var data = [];
-for (let i = 0; i < 768; i++) data.push([ faker.internet.email(), faker.date.past() ]);
-con.query('INSERT INTO users (email, created_at) VALUES ?', [ data ], (err, results) => {
-	if (err) throw err;
-	console.log(results);
-});
+// var data = [];
+// for (let i = 0; i < 768; i++) data.push([ faker.internet.email(), faker.date.past() ]);
+// con.query('INSERT INTO users (email, created_at) VALUES ?', [ data ], (err, results) => {
+// 	if (err) throw err;
+// 	console.log(results);
+// });
 
-con.end();
+// con.end();
