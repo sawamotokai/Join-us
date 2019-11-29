@@ -27,8 +27,13 @@ app.get('/', (req, res) => {
 });
 
 app.post('/register', (req, res) => {
-	const find = 'SELECT * FROM users WHERE email = ?';
-	var email = res.body.email;
+	var email = req.body.email;
+	q = 'INSERT INTO users SET ?';
+	con.query(q, { email: email }, (err, results) => {
+		if (err) throw err;
+		console.log(results);
+	});
+	res.send('THANK YOU');
 });
 
 app.listen((PORT = process.env.PORT), () => {
