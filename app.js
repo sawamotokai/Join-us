@@ -14,7 +14,7 @@ const con = mysql.createConnection({
 	host: process.env.HOST,
 	user: process.env.USERNAME,
 	password: process.env.PASSWORD,
-	database: 'join_us'
+	database: process.env.DB_NAME
 });
 
 app.get('/', (req, res) => {
@@ -36,6 +36,15 @@ app.post('/register', (req, res) => {
 		console.log(results);
 	});
 	res.redirect('/');
+});
+
+app.get('/api/populatedb', (req, res) => {
+	var data = [];
+	for (let i = 0; i < 768; i++) data.push([ faker.internet.email(), faker.date.past() ]);
+	con.query('INSERT INTO users (email, created_at) VALUES ?', [ data ], (err, results) => {
+		if (err) throw err;
+		console.log(results);
+	});
 });
 
 app.listen((PORT = process.env.PORT), () => {
