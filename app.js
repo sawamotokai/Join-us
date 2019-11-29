@@ -10,20 +10,46 @@ app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 dotenv.config();
 
-const con = mysql.createConnection({
-	host: process.env.HOST,
-	user: process.env.USERNAME,
-	password: process.env.PASSWORD,
-	database: 'join_us'
-});
+var con;
+const createPool = async () => {
+	con = await mysql.createPool({
+		// host: process.env.GOOGLE_IP,
+		user: process.env.USERNAME, // e.g. 'my-db-user'
+		password: process.env.PASSWORD, // e.g. 'my-db-password'
+		database: process.env.DB_NAME, // e.g. 'my-database'
+		// If connecting via unix domain socket, specify the path
+		socketPath: `/cloudsql/${process.env.CLOUD_SQL_CONNECTION_NAME}`
+		// If connecting via TCP, enter the IP and port instead
+		// host: 'localhost',
+		// port: 3306,
+
+		//...
+	});
+	console.log(con);
+};
+let result = createPool();
+// const con = mysql.createConnection({
+// 	host: process.env.HOST,
+// 	user: process.env.USERNAME,
+// 	password: process.env.PASSWORD,
+// 	database: 'join_us'
+// });
 
 app.get('/', (req, res) => {
 	const q = 'SELECT COUNT(*) AS userNum FROM users';
 	con.query(q, (err, results) => {
 		if (err) throw err;
 		console.log(results);
-		// res.send(`We have ${results[0].userNum} users!`);
 		res.render('home', { userNum: results[0].userNum });
+	});
+});
+
+app.get('/insertUsers', (req, res) => {
+	var data = [];
+	for (let i = 0; i < 78; i++) data.push([ faker.internet.email(), faker.date.past() ]);
+	con.query('INSERT INTO users (email, created_at) VALUES ?', [ data ], (err, results) => {
+		if (err) throw err;
+		console.log(results);
 	});
 });
 
