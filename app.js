@@ -2,8 +2,10 @@ const mysql = require('mysql');
 const faker = require('faker');
 const dotenv = require('dotenv');
 const express = require('express');
+const bodyParser = require('body-parser');
 const app = express();
 
+app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 dotenv.config();
 
@@ -22,6 +24,11 @@ app.get('/', (req, res) => {
 		// res.send(`We have ${results[0].userNum} users!`);
 		res.render('home', { userNum: results[0].userNum });
 	});
+});
+
+app.post('/register', (req, res) => {
+	const find = 'SELECT * FROM users WHERE email = ?';
+	var email = res.body.email;
 });
 
 app.listen((PORT = process.env.PORT), () => {
