@@ -22,7 +22,6 @@ app.get('/', (req, res) => {
 	con.query(q, (err, results) => {
 		if (err) throw err;
 		console.log(results);
-		// res.send(`We have ${results[0].userNum} users!`);
 		res.render('home', { userNum: results[0].userNum });
 	});
 });
