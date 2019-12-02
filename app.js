@@ -31,7 +31,7 @@ app.post('/register', (req, res) => {
 	q = 'INSERT INTO users SET ?';
 	con.query(q, { email: email }, (err, results) => {
 		if (err) {
-			return res.redirect('/');
+			res.redirect('/');
 		}
 		console.log(results);
 	});
@@ -45,7 +45,6 @@ app.get('/api/populatedb', (req, res) => {
 		if (err) throw err;
 		console.log(results);
 	});
-	res.redirect('/');
 });
 
 app.listen((PORT = process.env.PORT), () => {
