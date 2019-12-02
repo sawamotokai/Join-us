@@ -30,10 +30,7 @@ app.post('/register', (req, res) => {
 	var email = req.body.email;
 	q = 'INSERT INTO users SET ?';
 	con.query(q, { email: email }, (err, results) => {
-		if (err) {
-			return res.redirect('/');
-		}
-		res.redirect('/');
+		return res.redirect('/');
 	});
 });
 
@@ -41,8 +38,7 @@ app.get('/api/populatedb', (req, res) => {
 	var data = [];
 	for (let i = 0; i < 768; i++) data.push([ faker.internet.email(), faker.date.past() ]);
 	con.query('INSERT INTO users (email, created_at) VALUES ?', [ data ], (err, results) => {
-		if (err) throw err;
-		console.log(results);
+		return res.redirect('/');
 	});
 });
 
