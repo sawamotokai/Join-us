@@ -33,9 +33,8 @@ app.post('/register', (req, res) => {
 		if (err) {
 			return res.redirect('/');
 		}
-		console.log(results);
+		res.redirect('/');
 	});
-	res.redirect('/');
 });
 
 app.get('/api/populatedb', (req, res) => {
