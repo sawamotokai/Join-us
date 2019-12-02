@@ -31,7 +31,7 @@ app.post('/register', (req, res) => {
 	q = 'INSERT INTO users SET ?';
 	con.query(q, { email: email }, (err, results) => {
 		if (err) {
-			res.redirect('/');
+			return res.redirect('/');
 		}
 		console.log(results);
 	});
